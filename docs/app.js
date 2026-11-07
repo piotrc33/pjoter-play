@@ -50,7 +50,9 @@ function appCard(app) {
   description.textContent = app.description;
   const meta = document.createElement('p');
   meta.className = 'meta';
-  const version = app.release ? `Wersja ${app.release.versionName}` : 'W przygotowaniu';
+  const version = app.release
+    ? `Wersja ${app.release.versionName} · ${megabytes(app.release.size)}`
+    : 'W przygotowaniu';
   meta.textContent = `${version} · ${androidName(app.minSdk)}`;
 
   body.append(name, summary, description, meta);

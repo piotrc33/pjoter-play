@@ -5,6 +5,9 @@ import android.os.Build
 import androidx.core.content.pm.PackageInfoCompat
 import pl.pjoterplay.app.catalog.CatalogApp
 import pl.pjoterplay.app.catalog.Release
+import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
+import java.util.Locale
 
 data class InstalledVersion(val code: Long, val name: String)
 
@@ -57,6 +60,12 @@ private val androidVersions = mapOf(
 )
 
 fun androidVersionName(sdk: Int): String = androidVersions[sdk] ?: "API $sdk"
+
+// Keep in sync with megabytes() in docs/app.js.
+fun megabytes(bytes: Long): String {
+    val format = DecimalFormat("0.#", DecimalFormatSymbols(Locale.forLanguageTag("pl-PL")))
+    return "${format.format(bytes / 1_000_000.0)} MB"
+}
 
 enum class AppAction { Install, Update, Open }
 

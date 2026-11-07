@@ -52,4 +52,11 @@ class AppStatusTest {
         assertEquals("14", androidVersionName(34))
         assertEquals("API 99", androidVersionName(99))
     }
+
+    @Test
+    fun formatsMegabytes() {
+        assertEquals("1 MB", megabytes(1_000_000))
+        assertEquals("1,2 MB", megabytes(1_188_365))
+        assertEquals("3,1 MB", megabytes(3_097_262))
+    }
 }

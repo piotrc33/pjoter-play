@@ -50,6 +50,7 @@ import pl.pjoterplay.app.androidVersionName
 import pl.pjoterplay.app.catalog.CatalogApp
 import pl.pjoterplay.app.catalog.iconUrl
 import pl.pjoterplay.app.catalog.loadIcon
+import pl.pjoterplay.app.megabytes
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -140,10 +141,11 @@ private fun AppCard(item: AppItem, onInstall: (CatalogApp) -> Unit, onOpen: (Cat
 private fun statusText(status: AppStatus) = when (status) {
     AppStatus.NotReleased -> "W przygotowaniu"
     is AppStatus.Unsupported -> "Wymaga Androida ${androidVersionName(status.minSdk)} lub nowszego"
-    is AppStatus.NotInstalled -> "Nie zainstalowano · wersja ${status.release.versionName}"
+    is AppStatus.NotInstalled ->
+        "Nie zainstalowano · wersja ${status.release.versionName} · ${megabytes(status.release.size)}"
     is AppStatus.UpToDate -> "Zainstalowano · wersja ${status.installed.name}"
     is AppStatus.UpdateAvailable ->
-        "Dostępna aktualizacja: ${status.installed.name} → ${status.release.versionName}"
+        "Dostępna aktualizacja: ${status.installed.name} → ${status.release.versionName} · ${megabytes(status.release.size)}"
 }
 
 // The launcher's rounded square (the icons are full-bleed, CLAUDE.md, Layout).
@@ -211,8 +213,9 @@ private fun ManagerUpdateCard(item: AppItem, onInstall: (CatalogApp) -> Unit, on
         modifier = Modifier.fillMaxWidth(),
     ) {
         Column(Modifier.padding(16.dp)) {
-            val version = (item.status as? AppStatus.UpdateAvailable)?.release?.versionName ?: item.app.release?.versionName
-            Text("Nowa wersja Pjoter Play: $version", style = MaterialTheme.typography.titleMedium)
+            val release = (item.status as? AppStatus.UpdateAvailable)?.release ?: item.app.release
+            val meta = listOfNotNull(release?.versionName, release?.size?.let(::megabytes)).joinToString(" · ")
+            Text("Nowa wersja Pjoter Play: $meta", style = MaterialTheme.typography.titleMedium)
             Text(
                 "Pjoter Play zamknie się na chwilę podczas aktualizacji.",
                 style = MaterialTheme.typography.bodyMedium,

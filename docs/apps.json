@@ -35,7 +35,7 @@
       "id": "pl.slownik.app",
       "name": "definka",
       "summary": "Słownik języka polskiego w widżecie, bez internetu.",
-      "description": "Widżet na pulpicie wygląda jak pole wyszukiwania: dotknięcie otwiera okienko, a definicje pojawiają się już w trakcie pisania. Rozpoznaje odmienione formy („psami” → pies), a zaznaczone słowo w innej aplikacji sprawdza opcja „Definicja” w menu. Dane pochodzą z Wikisłownika.",
+      "description": "Widżet na pulpicie wygląda jak pole wyszukiwania: dotknięcie otwiera okienko, a definicje pojawiają się już w trakcie pisania. Rozpoznaje odmienione formy („psami” → pies), a zaznaczone słowo w innej aplikacji sprawdza opcja „Definicja” w menu. Dane pochodzą z Wikisłownika (po pierwszym uruchomieniu baza zajmuje ok. 60 MB).",
       "icon": "icons/definka.png",
       "minSdk": 34,
       "release": {
