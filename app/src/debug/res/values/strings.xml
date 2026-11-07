@@ -1,4 +1,5 @@
 <resources>
-    <!-- On the launcher beside the release build from the page, which is "Pjoter Play". -->
-    <string name="app_name">Pjoter Play debug</string>
+    <!-- On the launcher beside the release build from the page, which is "Pjoter Play". The mark goes first: launchers
+         cut long labels at the end, and "Pjoter Play debug" showed as "Pjoter Play…", like the release one. -->
+    <string name="app_name">[d] Pjoter Play</string>
 </resources>
