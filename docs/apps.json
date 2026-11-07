@@ -8,7 +8,13 @@
       "description": "Pokazuje listę moich aplikacji, instaluje je jednym dotknięciem i pilnuje, żeby zawsze były w najnowszej wersji.",
       "icon": "icons/pjoter-play.png",
       "minSdk": 26,
-      "release": null
+      "release": {
+        "versionCode": 100,
+        "versionName": "0.1.0",
+        "apk": "https://github.com/piotrc33/pjoter-play/releases/download/pjoter-play-v0.1.0/pjoter-play-0.1.0.apk",
+        "sha256": "19e50e735bbebb5ea24254aad4ca6008d3110bad91f24f1c4d0a8f469513c021",
+        "size": 1066799
+      }
     },
     {
       "id": "pl.reader.app",
