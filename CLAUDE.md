@@ -58,10 +58,13 @@ Keep in sync with `docs/app.js` and the manager's parser.
 - `scripts/ui.sh ui|tap <label>|shot <file>`: drives the phone, the system installer's and Play Protect's dialogs too
   (they are other apps, so `tap` works in any of them).
 - What a first install shows (Android 16, Pixel): the installer's "Wymagane uprawnienia" -> Ustawienia -> "Zezwalaj z
-  tego źródła" (the screen's up arrow returns to the manager, the session ends as Cancelled: tap Zainstaluj again) ->
+  tego źródła" (back, by the up arrow or the edge gesture, lands in the manager, not the installer: the session ends as
+  Cancelled, tap Zainstaluj again; adb's KEYCODE_BACK does nothing there, swipe from x=2 instead) ->
   "Zainstalować tę aplikację?" -> Play Protect's "Zalecane skanowanie aplikacji": "Więcej szczegółów", then the link
   "Zainstaluj bez skanowania" (not an accessibility node of its own: tap below the text, ~540,1580). The page's
   instructions (docs/index.html) say the same: keep them in sync.
+- Self-update tried 2026-11-07: a local release 0.0.5 (adb-installed) -> 0.1.0 from the card: one "Zaktualizować tę
+  aplikację?" and Play Protect, as the installer of record was the shell; now it is the manager itself.
 - Release paggio (`pl.reader.app` 0.2.0) is on the phone, installed by the debug manager (installerPackageName
   `pl.pjoterplay.app.debug`): the release manager is another package, so its first update of paggio will ask once.
 - `scripts/preview.sh`: serves `docs/` and saves phone-width light/dark screenshots to `.shots/` (Read them).

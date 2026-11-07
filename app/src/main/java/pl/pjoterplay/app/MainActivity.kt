@@ -29,9 +29,8 @@ class MainActivity : ComponentActivity() {
         packageManager.getLaunchIntentForPackage(app.id)?.let(::startActivity)
     }
 
-    // The user may have installed or removed an app while away (also through the system installer's screen).
     override fun onResume() {
         super.onResume()
-        apps.refreshInstalled()
+        apps.onResume()
     }
 }

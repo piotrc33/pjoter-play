@@ -3,6 +3,7 @@ package pl.pjoterplay.app
 import android.app.Application
 import android.content.pm.PackageInstaller
 import android.os.Build
+import android.os.SystemClock
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
@@ -53,6 +54,8 @@ class AppsViewModel(application: Application) : AndroidViewModel(application) {
     val state: StateFlow<AppsState> = _state
 
     private var catalog: Catalog? = null
+    /** SystemClock.elapsedRealtime() of the last successful download; 0 = never. */
+    private var fetchedAt = 0L
     private val operations = mutableMapOf<String, Operation>()
 
     init {
@@ -66,6 +69,7 @@ class AppsViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch {
             val error = try {
                 catalog = fetchCatalog()
+                fetchedAt = SystemClock.elapsedRealtime()
                 null
             } catch (e: UnsupportedCatalogException) {
                 Log.w(TAG, "Catalog too new", e)
@@ -80,8 +84,14 @@ class AppsViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    /** Without the network: on return to the app, after the user installed or removed something. */
-    fun refreshInstalled() = publish()
+    /**
+     * On return to the app: the user may have installed or removed something meanwhile, and the process may have been
+     * alive for hours, with a catalog from before the latest release (the user once saw no manager update that way).
+     */
+    fun onResume() {
+        publish()
+        if (isStale(fetchedAt, SystemClock.elapsedRealtime())) refresh()
+    }
 
     fun install(app: CatalogApp) {
         val release = app.release ?: return
@@ -146,6 +156,11 @@ class AppsViewModel(application: Application) : AndroidViewModel(application) {
         const val TAG = "AppsViewModel"
     }
 }
+
+// GitHub Pages' CDN keeps apps.json for 10 minutes anyway (max-age=600), so more often would rarely find anything new.
+private const val CATALOG_MAX_AGE_MS = 5 * 60_000L
+
+fun isStale(fetchedAt: Long, now: Long): Boolean = fetchedAt != 0L && now - fetchedAt > CATALOG_MAX_AGE_MS
 
 fun reasonOf(installerStatus: Int): FailureReason = when (installerStatus) {
     // Signed with another key (e.g. a build from elsewhere): only uninstalling, which deletes its data, helps.

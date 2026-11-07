@@ -41,4 +41,11 @@ class InstallTest {
         assertEquals(FailureReason.Storage, reasonOf(PackageInstaller.STATUS_FAILURE_STORAGE))
         assertEquals(FailureReason.Other, reasonOf(PackageInstaller.STATUS_FAILURE))
     }
+
+    @Test
+    fun catalogIsFetchedAgainAfterFiveMinutes() {
+        assertFalse("never fetched: the first download is init's", isStale(0, 10_000_000))
+        assertFalse(isStale(1_000, 1_000 + 5 * 60_000))
+        assertTrue(isStale(1_000, 1_000 + 5 * 60_000 + 1))
+    }
 }
