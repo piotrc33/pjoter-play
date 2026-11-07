@@ -28,6 +28,15 @@ Keep in sync with `docs/app.js` and the manager's parser.
 - The manager is an entry too (`pl.pjoterplay.app`), so it updates itself; the page shows it as the download button
   instead of a card.
 
+## Releasing an app
+- In the app's repo: `git tag v1.2.3 && git push origin v1.2.3`. Its workflow (first one: ../reader/.github/workflows/apk.yml)
+  builds the signed APK with versionCode from the tag (major*10000 + minor*100 + patch), uploads it here as release
+  `<name>-v1.2.3`, then runs `scripts/add-release.py` and pushes `docs/apps.json`. Pages redeploys in ~30 s.
+- The app's repo needs the secret `PJOTER_PLAY_TOKEN`: a fine-grained token with Contents read/write on this repo only
+  (releases and the catalog push). App repos are private, so their own `GITHUB_TOKEN` can't write here.
+- A new app needs its entry (name, texts, icon, minSdk, `release: null`) added here by hand first; the script only
+  fills `release`. With the third app's workflow, extract the shared steps into a reusable workflow in this repo.
+
 ## Decisions
 - Manager `minSdk` 26 (Android 8.0, ~97% of devices): per-app "install unknown apps" permission. Updates without a
   confirmation dialog only on API 31+ (`USER_ACTION_NOT_REQUIRED`); below that the system asks every time.
