@@ -15,7 +15,9 @@ Plan with the decisions behind it: `~/.claude/plans/hejka-mam-nowe-marzenie-stat
 - `app/`: the Android manager (Kotlin + Compose, same Gradle/library versions as ../reader). `catalog/` downloads and
   parses apps.json, `AppStatus.kt` decides what each app's row says and its button, `ui/` draws it. `install/`
   downloads the APK (checked against sha256/size while it arrives) and commits a `PackageInstaller` session; the
-  result comes back through `InstallReceiver` -> `InstallResults` -> `AppsViewModel`. The debug build is
+  result comes back through `InstallReceiver` -> `InstallResults` -> `AppsViewModel`.
+  `updates/UpdateCheck.kt`: a daily WorkManager check (release build only, so updates aren't announced twice) that
+  notifies about installed apps with a newer release, each release once. The debug build is
   `pl.pjoterplay.app.debug`, next to the release build friends install.
 - The repo is public on purpose: app source repos (reader, ...) stay private, and a private repo's release assets
   can't be downloaded without a token. APKs are published as GitHub Releases of this repo.
@@ -67,5 +69,8 @@ Keep in sync with `docs/app.js` and the manager's parser.
   aplikację?" and Play Protect, as the installer of record was the shell; now it is the manager itself.
 - Release paggio (`pl.reader.app` 0.2.0) is on the phone, installed by the debug manager (installerPackageName
   `pl.pjoterplay.app.debug`): the release manager is another package, so its first update of paggio will ask once.
+- Update check on demand (debug build): `adb shell am force-stop pl.pjoterplay.app.debug` then
+  `adb shell am start -n pl.pjoterplay.app.debug/pl.pjoterplay.app.MainActivity --ez check_updates true`; result in
+  `adb logcat -s UpdateCheck`. It also sees the release manager (`pl.pjoterplay.app`) as an app with updates.
 - `scripts/preview.sh`: serves `docs/` and saves phone-width light/dark screenshots to `.shots/` (Read them).
 - Don't `pkill -f` a pattern that appears in the same command line: it kills the Bash tool's own shell.
