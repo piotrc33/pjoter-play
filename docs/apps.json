@@ -17,7 +17,13 @@
       "description": "Każda książka otwiera się na ostatnio czytanej stronie. Przypisy prowadzą z powrotem do tekstu, wyszukiwanie w książce nie zwraca uwagi na polskie znaki, a po każdym skoku łatwo wrócić na poprzednie miejsce.",
       "icon": "icons/paggio.png",
       "minSdk": 34,
-      "release": null
+      "release": {
+        "versionCode": 200,
+        "versionName": "0.2.0",
+        "apk": "https://github.com/piotrc33/pjoter-play/releases/download/paggio-v0.2.0/paggio-0.2.0.apk",
+        "sha256": "70e119fcab18dbecc45d0469e678bd665f10163236935c28953f4b07c8fad45b",
+        "size": 3097446
+      }
     }
   ]
 }
