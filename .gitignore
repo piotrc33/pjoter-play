@@ -1,1 +1,10 @@
 .shots/
+.gradle/
+.kotlin/
+build/
+local.properties
+.idea/
+*.iml
+*.keystore
+*.jks
+__pycache__/

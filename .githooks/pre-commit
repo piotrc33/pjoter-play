@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# The full check before every commit. Gradle has little to redo right after a check.sh run, so running it by hand
+# first costs only seconds here. It checks the working tree, not just what is staged.
+# Enable once per clone: git config core.hooksPath .githooks
+exec scripts/check.sh

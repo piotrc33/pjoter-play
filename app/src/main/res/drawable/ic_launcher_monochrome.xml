@@ -1,0 +1,25 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- docs/icons/pjoter-play.svg's 96 px shapes, scaled by 0.75 into the 72 dp a launcher's mask shows (like
+         paggio's icon). Keep the shapes in sync with the SVG and with ic_launcher_foreground/_monochrome. -->
+    <group
+        android:scaleX="0.75"
+        android:scaleY="0.75"
+        android:translateX="18"
+        android:translateY="18">
+        <path
+            android:fillColor="#FFFFFFFF"
+            android:pathData="M38,30L68,48L38,66Z"
+            android:strokeColor="#FFFFFFFF"
+            android:strokeLineJoin="round"
+            android:strokeWidth="10" />
+        <path
+            android:pathData="M30,76H66"
+            android:strokeColor="#FFFFFFFF"
+            android:strokeLineCap="round"
+            android:strokeWidth="5" />
+    </group>
+</vector>

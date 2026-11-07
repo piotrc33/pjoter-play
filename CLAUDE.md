@@ -12,6 +12,9 @@ Plan with the decisions behind it: `~/.claude/plans/hejka-mam-nowe-marzenie-stat
   - `index.html`, `style.css`, `app.js`: plain static page, no build step (the user's choice: Angular is overkill here).
   - `icons/`: SVG source + 192 px PNG (the manager will show the PNGs: Android has no built-in SVG support).
     Regenerate with `rsvg-convert -w 192 -h 192 x.svg -o x.png`.
+- `app/`: the Android manager (Kotlin + Compose, same Gradle/library versions as ../reader). `catalog/` downloads and
+  parses apps.json, `AppStatus.kt` decides what each app's row says, `ui/` draws it. The debug build is
+  `pl.pjoterplay.app.debug`, next to the release build friends install.
 - The repo is public on purpose: app source repos (reader, ...) stay private, and a private repo's release assets
   can't be downloaded without a token. APKs are published as GitHub Releases of this repo.
 
@@ -34,5 +37,10 @@ Keep in sync with `docs/app.js` and the manager's parser.
   GitHub repo, the release key and CI first.
 
 ## Workflow
+- `scripts/test.sh [TestClass ...]` unit tests (~20 s warm); `scripts/quick.sh` tests + install + start on the phone;
+  `scripts/check.sh` tests + lint, run by the pre-commit hook (`git config core.hooksPath .githooks` once per clone).
+- `CatalogTest` parses the real `docs/apps.json` and checks its icons exist: a catalog edit is verified by `test.sh`.
+- The phone has paggio's debug build (`pl.reader.app.debug`), not `pl.reader.app`, so the manager rightly shows paggio
+  as not installed.
 - `scripts/preview.sh`: serves `docs/` and saves phone-width light/dark screenshots to `.shots/` (Read them).
 - Don't `pkill -f` a pattern that appears in the same command line: it kills the Bash tool's own shell.

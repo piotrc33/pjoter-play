@@ -1,0 +1,4 @@
+<resources>
+    <!-- Window background behind Compose (visible at launch): light in day mode, dark in values-night. -->
+    <style name="Theme.PjoterPlay" parent="android:Theme.Material.Light.NoActionBar" />
+</resources>
