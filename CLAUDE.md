@@ -13,7 +13,9 @@ Plan with the decisions behind it: `~/.claude/plans/hejka-mam-nowe-marzenie-stat
   - `icons/`: SVG source + 192 px PNG (the manager will show the PNGs: Android has no built-in SVG support).
     Regenerate with `rsvg-convert -w 192 -h 192 x.svg -o x.png`.
 - `app/`: the Android manager (Kotlin + Compose, same Gradle/library versions as ../reader). `catalog/` downloads and
-  parses apps.json, `AppStatus.kt` decides what each app's row says, `ui/` draws it. The debug build is
+  parses apps.json, `AppStatus.kt` decides what each app's row says and its button, `ui/` draws it. `install/`
+  downloads the APK (checked against sha256/size while it arrives) and commits a `PackageInstaller` session; the
+  result comes back through `InstallReceiver` -> `InstallResults` -> `AppsViewModel`. The debug build is
   `pl.pjoterplay.app.debug`, next to the release build friends install.
 - The repo is public on purpose: app source repos (reader, ...) stay private, and a private repo's release assets
   can't be downloaded without a token. APKs are published as GitHub Releases of this repo.
@@ -49,7 +51,14 @@ Keep in sync with `docs/app.js` and the manager's parser.
 - `scripts/test.sh [TestClass ...]` unit tests (~20 s warm); `scripts/quick.sh` tests + install + start on the phone;
   `scripts/check.sh` tests + lint, run by the pre-commit hook (`git config core.hooksPath .githooks` once per clone).
 - `CatalogTest` parses the real `docs/apps.json` and checks its icons exist: a catalog edit is verified by `test.sh`.
-- The phone has paggio's debug build (`pl.reader.app.debug`), not `pl.reader.app`, so the manager rightly shows paggio
-  as not installed.
+- `scripts/ui.sh ui|tap <label>|shot <file>`: drives the phone, the system installer's and Play Protect's dialogs too
+  (they are other apps, so `tap` works in any of them).
+- What a first install shows (Android 16, Pixel): the installer's "Wymagane uprawnienia" -> Ustawienia -> "Zezwalaj z
+  tego źródła" (the screen's up arrow returns to the manager, the session ends as Cancelled: tap Zainstaluj again) ->
+  "Zainstalować tę aplikację?" -> Play Protect's "Zalecane skanowanie aplikacji": "Więcej szczegółów", then the link
+  "Zainstaluj bez skanowania" (not an accessibility node of its own: tap below the text, ~540,1580). The page's
+  instructions (docs/index.html) say the same: keep them in sync.
+- Release paggio (`pl.reader.app` 0.2.0) is on the phone, installed by the debug manager (installerPackageName
+  `pl.pjoterplay.app.debug`): the release manager is another package, so its first update of paggio will ask once.
 - `scripts/preview.sh`: serves `docs/` and saves phone-width light/dark screenshots to `.shots/` (Read them).
 - Don't `pkill -f` a pattern that appears in the same command line: it kills the Bash tool's own shell.

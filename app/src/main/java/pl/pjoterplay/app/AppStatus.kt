@@ -57,3 +57,13 @@ private val androidVersions = mapOf(
 )
 
 fun androidVersionName(sdk: Int): String = androidVersions[sdk] ?: "API $sdk"
+
+enum class AppAction { Install, Update, Open }
+
+/** The card's button; none when there is nothing to do on this phone. */
+fun actionOf(status: AppStatus): AppAction? = when (status) {
+    is AppStatus.NotInstalled -> AppAction.Install
+    is AppStatus.UpdateAvailable -> AppAction.Update
+    is AppStatus.UpToDate -> AppAction.Open
+    AppStatus.NotReleased, is AppStatus.Unsupported -> null
+}

@@ -21,6 +21,8 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilledTonalButton
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -36,17 +38,27 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import pl.pjoterplay.app.AppAction
 import pl.pjoterplay.app.AppItem
 import pl.pjoterplay.app.AppStatus
 import pl.pjoterplay.app.AppsState
+import pl.pjoterplay.app.FailureReason
 import pl.pjoterplay.app.LoadError
+import pl.pjoterplay.app.Operation
+import pl.pjoterplay.app.actionOf
 import pl.pjoterplay.app.androidVersionName
+import pl.pjoterplay.app.catalog.CatalogApp
 import pl.pjoterplay.app.catalog.iconUrl
 import pl.pjoterplay.app.catalog.loadIcon
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AppsScreen(state: AppsState, onRefresh: () -> Unit) {
+fun AppsScreen(
+    state: AppsState,
+    onRefresh: () -> Unit,
+    onInstall: (CatalogApp) -> Unit,
+    onOpen: (CatalogApp) -> Unit,
+) {
     Scaffold(topBar = { TopAppBar(title = { Text("Pjoter Play") }) }) { padding ->
         val items = state.items
         when {
@@ -62,7 +74,7 @@ fun AppsScreen(state: AppsState, onRefresh: () -> Unit) {
                 ) {
                     // Refreshing keeps the old list: only say the new one couldn't be fetched.
                     state.error?.let { error -> item { Text(errorText(error), color = MaterialTheme.colorScheme.error) } }
-                    items(items, key = { it.app.id }) { AppCard(it) }
+                    items(items, key = { it.app.id }) { AppCard(it, onInstall, onOpen) }
                 }
             }
             state.loading -> Box(Modifier.padding(padding).fillMaxSize(), Alignment.Center) {
@@ -92,7 +104,7 @@ private fun ErrorMessage(error: LoadError, onRetry: () -> Unit, modifier: Modifi
 }
 
 @Composable
-private fun AppCard(item: AppItem) {
+private fun AppCard(item: AppItem, onInstall: (CatalogApp) -> Unit, onOpen: (CatalogApp) -> Unit) {
     Card(
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
         modifier = Modifier.fillMaxWidth(),
@@ -118,6 +130,7 @@ private fun AppCard(item: AppItem) {
                         MaterialTheme.colorScheme.onSurfaceVariant
                     },
                 )
+                OperationRow(item, onInstall, onOpen)
             }
         }
     }
@@ -141,4 +154,51 @@ private fun AppIcon(url: String) {
     val modifier = Modifier.size(56.dp).clip(iconShape)
     icon?.let { Image(it, contentDescription = null, modifier = modifier) }
         ?: Box(modifier.background(MaterialTheme.colorScheme.surfaceVariant))
+}
+
+@Composable
+private fun OperationRow(item: AppItem, onInstall: (CatalogApp) -> Unit, onOpen: (CatalogApp) -> Unit) {
+    when (val operation = item.operation) {
+        is Operation.Downloading -> Progress("Pobieranie… ${(operation.progress * 100).toInt()}%") {
+            LinearProgressIndicator(progress = { operation.progress }, modifier = Modifier.fillMaxWidth())
+        }
+        Operation.Installing -> Progress("Instalowanie…") {
+            LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
+        }
+        is Operation.Failed, null -> {
+            if (operation is Operation.Failed) {
+                Spacer(Modifier.height(8.dp))
+                Text(
+                    failureText(operation.reason),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.error,
+                )
+            }
+            val action = actionOf(item.status) ?: return
+            Spacer(Modifier.height(12.dp))
+            when (action) {
+                AppAction.Install -> Button(onClick = { onInstall(item.app) }) { Text("Zainstaluj") }
+                AppAction.Update -> Button(onClick = { onInstall(item.app) }) { Text("Aktualizuj") }
+                AppAction.Open -> FilledTonalButton(onClick = { onOpen(item.app) }) { Text("Otwórz") }
+            }
+        }
+    }
+}
+
+@Composable
+private fun Progress(label: String, indicator: @Composable () -> Unit) {
+    Spacer(Modifier.height(12.dp))
+    indicator()
+    Spacer(Modifier.height(4.dp))
+    Text(label, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+}
+
+private fun failureText(reason: FailureReason) = when (reason) {
+    FailureReason.Network -> "Nie udało się pobrać. Sprawdź połączenie z internetem."
+    FailureReason.Corrupt -> "Pobrany plik jest uszkodzony. Spróbuj ponownie."
+    FailureReason.SignatureConflict ->
+        "Zainstalowana wersja pochodzi z innego źródła. Odinstaluj ją, żeby zainstalować tę (jej dane zostaną usunięte)."
+    FailureReason.Storage -> "Za mało miejsca na telefonie."
+    FailureReason.Incompatible -> "Ta aplikacja nie działa na tym telefonie."
+    FailureReason.Other -> "Instalacja nie powiodła się."
 }

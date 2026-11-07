@@ -11,6 +11,10 @@
         android:name="android.permission.QUERY_ALL_PACKAGES"
         tools:ignore="QueryAllPackagesPermission" />
 
+    <!-- Installing and updating the catalog's apps. The user grants it once, in the system's "unknown apps" screen,
+         which the installer opens itself the first time. -->
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+
     <application
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -24,5 +28,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <!-- The system installer's results; only its PendingIntent reaches it. -->
+        <receiver
+            android:name=".install.InstallReceiver"
+            android:exported="false" />
     </application>
 </manifest>

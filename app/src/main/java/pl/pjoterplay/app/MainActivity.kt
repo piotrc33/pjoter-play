@@ -7,6 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import pl.pjoterplay.app.catalog.CatalogApp
 import pl.pjoterplay.app.ui.AppsScreen
 import pl.pjoterplay.app.ui.PjoterPlayTheme
 
@@ -19,9 +20,13 @@ class MainActivity : ComponentActivity() {
         setContent {
             PjoterPlayTheme {
                 val state by apps.state.collectAsStateWithLifecycle()
-                AppsScreen(state, onRefresh = apps::refresh)
+                AppsScreen(state, onRefresh = apps::refresh, onInstall = apps::install, onOpen = ::open)
             }
         }
+    }
+
+    private fun open(app: CatalogApp) {
+        packageManager.getLaunchIntentForPackage(app.id)?.let(::startActivity)
     }
 
     // The user may have installed or removed an app while away (also through the system installer's screen).
