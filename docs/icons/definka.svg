@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- definka's launcher icon, full-bleed: the page and the manager mask it themselves. The 100-unit square is the
+       launcher's visible 72 dp. Keep in sync with slownik/app/src/main/res/drawable/ic_launcher_foreground.xml. -->
+  <rect width="100" height="100" fill="#1F2A44"/>
+  <path fill="#F6EFD9" d="M18,34 Q34,28 50,36 L50,76 Q34,69 18,74 Z"/>
+  <path fill="#FFFFFF" d="M50,36 Q66,28 82,34 L82,74 Q66,69 50,76 Z"/>
+  <path d="M25,44 Q34,41 44,45 M25,52 Q34,49 44,53 M25,60 Q34,57 44,61 M56,45 Q66,41 75,44 M56,53 Q66,49 75,52 M56,61 Q66,57 75,60"
+        stroke="#1F2A44" stroke-opacity="0.28" stroke-linecap="round" stroke-width="2.4" fill="none"/>
+  <path fill="#E8B84A" d="M66,31 L66,55 L69.5,51.5 L73,55 L73,31 Z"/>
+</svg>
