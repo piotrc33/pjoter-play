@@ -9,11 +9,11 @@
       "icon": "icons/pjoter-play.png",
       "minSdk": 26,
       "release": {
-        "versionCode": 200,
-        "versionName": "0.2.0",
-        "apk": "https://github.com/piotrc33/pjoter-play/releases/download/pjoter-play-v0.2.0/pjoter-play-0.2.0.apk",
-        "sha256": "304dab9901dd2eb6cc35691818c8e9bb1fb56ba8778ccd511b6a01743abffac4",
-        "size": 1188365
+        "versionCode": 300,
+        "versionName": "0.3.0",
+        "apk": "https://github.com/piotrc33/pjoter-play/releases/download/pjoter-play-v0.3.0/pjoter-play-0.3.0.apk",
+        "sha256": "23d960aad5725d0e5a1e6fe9ff1d16f189da25a303af1d10d79ab32e2efb96fc",
+        "size": 1188369
       }
     },
     {
