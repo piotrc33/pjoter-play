@@ -24,11 +24,11 @@
       "icon": "icons/pedefka.png",
       "minSdk": 34,
       "release": {
-        "versionCode": 200,
-        "versionName": "0.2.0",
-        "apk": "https://github.com/piotrc33/pjoter-play/releases/download/paggio-v0.2.0/paggio-0.2.0.apk",
-        "sha256": "70e119fcab18dbecc45d0469e678bd665f10163236935c28953f4b07c8fad45b",
-        "size": 3097446
+        "versionCode": 300,
+        "versionName": "0.3.0",
+        "apk": "https://github.com/piotrc33/pjoter-play/releases/download/pedefka-v0.3.0/pedefka-0.3.0.apk",
+        "sha256": "91798d5535c062590cf269bba135e860cb1d6f8892c4b7815f7c88b7022c93a4",
+        "size": 3097262
       }
     }
   ]
