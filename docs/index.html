@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pjoter Play</title>
+  <meta name="description" content="Moje aplikacje na Androida w jednym miejscu: instalacja i aktualizacje.">
+  <link rel="icon" href="icons/pjoter-play.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <main>
+    <header class="hero">
+      <img class="icon icon-hero" src="icons/pjoter-play.svg" alt="" width="96" height="96">
+      <h1>Pjoter Play</h1>
+      <p class="lead">Moje aplikacje na Androida w jednym miejscu. Instalujesz raz, a aktualizacje przychodzą same.</p>
+      <!-- app.js turns this into a download link once the manager has a release in apps.json. -->
+      <a id="download" class="button" aria-disabled="true">Wkrótce do pobrania</a>
+      <p id="download-meta" class="meta"></p>
+    </header>
+
+    <section>
+      <h2>Jak zainstalować</h2>
+      <ol class="steps">
+        <li>Na telefonie z Androidem pobierz plik przyciskiem powyżej.</li>
+        <li>Otwórz pobrany plik. Android zapyta, czy przeglądarka może instalować aplikacje: włącz
+          <em>Zezwalaj z tego źródła</em> i wróć.</li>
+        <li>Jeśli Play Protect ostrzeże, że nie zna aplikacji, wybierz <em>Więcej szczegółów</em>, a potem
+          <em>Zainstaluj mimo to</em>.</li>
+        <li>Otwórz Pjoter Play i wybierz aplikacje z listy. Przy pierwszej instalacji Pjoter Play poprosi o tę samą
+          zgodę dla siebie.</li>
+      </ol>
+    </section>
+
+    <section>
+      <h2>Aplikacje</h2>
+      <ul id="apps" class="apps"></ul>
+      <p id="apps-error" class="meta" hidden>Nie udało się wczytać listy aplikacji.</p>
+    </section>
+  </main>
+</body>
+</html>

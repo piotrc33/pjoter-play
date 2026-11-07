@@ -1,0 +1,87 @@
+/* paggio's palette (Noc / Papier), so the site and the apps look like one family. */
+:root {
+  --bg: #F6F1E7;
+  --surface: #FFFDF8;
+  --text: #1F1B16;
+  --muted: #6B6259;
+  --accent: #C4623A;
+  --accent-text: #FFFDF8;
+  --border: #E4DACB;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1F1B16;
+    --surface: #2A251F;
+    --text: #F6F1E7;
+    --muted: #B3A897;
+    --accent: #D9784F;
+    --accent-text: #1F1B16;
+    --border: #3A332B;
+  }
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 17px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+main {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 48px 16px 64px;
+}
+
+h1, h2, h3 { line-height: 1.2; margin: 0; }
+h1 { font-size: 2.25rem; margin-top: 16px; }
+h2 { font-size: 1.3rem; margin-bottom: 16px; }
+h3 { font-size: 1.1rem; }
+p { margin: 0; }
+
+section { margin-top: 56px; }
+
+.icon {
+  border-radius: 22%;
+  display: block;
+  flex-shrink: 0;
+  /* The icons' dark background melts into the dark theme without this ring. */
+  box-shadow: 0 0 0 1px var(--border);
+}
+
+.hero { text-align: center; }
+.icon-hero { margin: 0 auto; box-shadow: 0 0 0 1px var(--border), 0 8px 24px rgb(0 0 0 / 0.18); }
+.lead { color: var(--muted); margin: 12px auto 28px; max-width: 30em; }
+
+.button {
+  display: inline-block;
+  padding: 14px 28px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: var(--accent-text);
+  font-weight: 600;
+  text-decoration: none;
+}
+.button[aria-disabled="true"] { opacity: 0.5; cursor: default; }
+
+.meta { color: var(--muted); font-size: 0.9rem; margin-top: 10px; }
+
+.steps { padding-left: 1.4em; margin: 0; }
+.steps li + li { margin-top: 10px; }
+.steps em { font-style: normal; font-weight: 600; }
+
+.apps { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; }
+
+.app {
+  display: flex;
+  gap: 16px;
+  padding: 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+}
+.app .summary { font-weight: 600; margin: 2px 0 6px; }
+.app .meta { margin-top: 8px; }

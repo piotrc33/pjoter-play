@@ -1,0 +1,23 @@
+{
+  "schema": 1,
+  "apps": [
+    {
+      "id": "pl.pjoterplay.app",
+      "name": "Pjoter Play",
+      "summary": "Moje aplikacje w jednym miejscu: instalacja i aktualizacje.",
+      "description": "Pokazuje listę moich aplikacji, instaluje je jednym dotknięciem i pilnuje, żeby zawsze były w najnowszej wersji.",
+      "icon": "icons/pjoter-play.png",
+      "minSdk": 26,
+      "release": null
+    },
+    {
+      "id": "pl.reader.app",
+      "name": "paggio",
+      "summary": "Czytnik e-booków: EPUB, PDF i MOBI.",
+      "description": "Każda książka otwiera się na ostatnio czytanej stronie. Przypisy prowadzą z powrotem do tekstu, wyszukiwanie w książce nie zwraca uwagi na polskie znaki, a po każdym skoku łatwo wrócić na poprzednie miejsce.",
+      "icon": "icons/paggio.png",
+      "minSdk": 34,
+      "release": null
+    }
+  ]
+}
