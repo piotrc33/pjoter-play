@@ -74,6 +74,7 @@ fun AppsScreen(
                 ) {
                     // Refreshing keeps the old list: only say the new one couldn't be fetched.
                     state.error?.let { error -> item { Text(errorText(error), color = MaterialTheme.colorScheme.error) } }
+                    state.managerUpdate?.let { manager -> item(key = "manager") { ManagerUpdateCard(manager, onInstall, onOpen) } }
                     items(items, key = { it.app.id }) { AppCard(it, onInstall, onOpen) }
                 }
             }
@@ -201,4 +202,22 @@ private fun failureText(reason: FailureReason) = when (reason) {
     FailureReason.Storage -> "Za mało miejsca na telefonie."
     FailureReason.Incompatible -> "Ta aplikacja nie działa na tym telefonie."
     FailureReason.Other -> "Instalacja nie powiodła się."
+}
+
+@Composable
+private fun ManagerUpdateCard(item: AppItem, onInstall: (CatalogApp) -> Unit, onOpen: (CatalogApp) -> Unit) {
+    Card(
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
+        modifier = Modifier.fillMaxWidth(),
+    ) {
+        Column(Modifier.padding(16.dp)) {
+            val version = (item.status as? AppStatus.UpdateAvailable)?.release?.versionName ?: item.app.release?.versionName
+            Text("Nowa wersja Pjoter Play: $version", style = MaterialTheme.typography.titleMedium)
+            Text(
+                "Pjoter Play zamknie się na chwilę podczas aktualizacji.",
+                style = MaterialTheme.typography.bodyMedium,
+            )
+            OperationRow(item, onInstall, onOpen)
+        }
+    }
 }

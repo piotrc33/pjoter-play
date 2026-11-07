@@ -36,6 +36,10 @@ Keep in sync with `docs/app.js` and the manager's parser.
   `<name>-v1.2.3`, then runs `scripts/add-release.py` and pushes `docs/apps.json`. Pages redeploys in ~30 s.
 - The app's repo needs the secret `PJOTER_PLAY_TOKEN`: a fine-grained token with Contents read/write on this repo only
   (releases and the catalog push). App repos are private, so their own `GITHUB_TOKEN` can't write here.
+- The manager itself: `git tag v1.2.3 && git push origin v1.2.3` here; `.github/workflows/release.yml` (the same steps,
+  this repo's own token, secrets RELEASE_KEYSTORE_BASE64/PASSWORD with paggio's key) publishes `pjoter-play-v1.2.3`.
+  Installed release managers show an update card on top of the list (`AppsState.managerUpdate`; never in the debug
+  build, whose package differs). The workflow pushes the catalog to `main`, so pull before working on `docs/`.
 - A new app needs its entry (name, texts, icon, minSdk, `release: null`) added here by hand first; the script only
   fills `release`. With the third app's workflow, extract the shared steps into a reusable workflow in this repo.
 

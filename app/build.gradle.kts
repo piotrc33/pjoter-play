@@ -14,8 +14,22 @@ android {
         // Android 8.0, ~97% of phones: the friends' phones too, not just the Pixel. See CLAUDE.md, Decisions.
         minSdk = 26
         targetSdk = 37
-        versionCode = 1
-        versionName = "0.1.0"
+        // From the release tag in CI (keep in sync with .github/workflows/release.yml); local builds stay 1 / 0.1.0.
+        versionCode = System.getenv("VERSION_CODE")?.toInt() ?: 1
+        versionName = System.getenv("VERSION_NAME") ?: "0.1.0"
+    }
+
+    signingConfigs {
+        // paggio's key, the one key for all the apps (CLAUDE.md, Decisions), from the environment so that it stays out
+        // of the repo. Keep in sync with .github/workflows/release.yml. Without it a release build comes out unsigned.
+        System.getenv("RELEASE_KEYSTORE_FILE")?.let { keystore ->
+            create("release") {
+                storeFile = file(keystore)
+                storePassword = System.getenv("RELEASE_KEYSTORE_PASSWORD")
+                keyAlias = "paggio"
+                keyPassword = storePassword
+            }
+        }
     }
 
     buildTypes {
@@ -27,6 +41,7 @@ android {
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"))
+            signingConfig = signingConfigs.findByName("release")
         }
     }
 

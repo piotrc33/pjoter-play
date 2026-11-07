@@ -1,0 +1,108 @@
+# A release of the manager itself: pushing a tag `v1.2.3` builds the signed APK, uploads it to this repo's Releases and
+# puts it into docs/apps.json, where the download page's button and the managers already installed (their update card)
+# find it. The same steps as ../reader/.github/workflows/apk.yml: keep the two in sync, and with the third app extract
+# them into a reusable workflow here (CLAUDE.md, Releasing an app).
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+
+# One catalog push at a time, so the versionCode check in add-release.py sees the previous release.
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+permissions:
+  # The release and the catalog push are in this repo, so its own token is enough (no PJOTER_PLAY_TOKEN here).
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          # The catalog is pushed to main: a tag's detached checkout couldn't.
+          ref: main
+
+      # v1.2.3 -> 10203: managers update only to a higher versionCode, and this one can't be forgotten.
+      # Keep in sync with versionCode in app/build.gradle.kts and CLAUDE.md.
+      - name: Version from the tag
+        id: version
+        run: |
+          if [[ ! "$GITHUB_REF_NAME" =~ ^v([0-9]+)\.([0-9]{1,2})\.([0-9]{1,2})$ ]]; then
+            echo "::error::The tag must look like v1.2.3 (minor and patch below 100), not $GITHUB_REF_NAME"
+            exit 1
+          fi
+          echo "name=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
+          echo "code=$((BASH_REMATCH[1] * 10000 + BASH_REMATCH[2] * 100 + BASH_REMATCH[3]))" >> "$GITHUB_OUTPUT"
+
+      # Build the tagged commit, not main's newest one.
+      - name: Check out the tag
+        run: git checkout -q "$GITHUB_SHA"
+
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: gradle
+
+      # paggio's key, the one for all the apps: a manager signed by another key couldn't update itself. Set once with
+      #   base64 -w0 ~/.android/paggio-release.jks | gh secret set RELEASE_KEYSTORE_BASE64 -R piotrc33/pjoter-play
+      #   gh secret set RELEASE_KEYSTORE_PASSWORD -R piotrc33/pjoter-play < ~/.android/paggio-release.password
+      # Safe in a public repo: secrets never reach workflows of forks' pull requests, and only the owner pushes tags.
+      - name: Restore the signing key
+        env:
+          RELEASE_KEYSTORE_BASE64: ${{ secrets.RELEASE_KEYSTORE_BASE64 }}
+          RELEASE_KEYSTORE_PASSWORD: ${{ secrets.RELEASE_KEYSTORE_PASSWORD }}
+        run: |
+          if [ -z "$RELEASE_KEYSTORE_BASE64" ] || [ -z "$RELEASE_KEYSTORE_PASSWORD" ]; then
+            echo "::error::The signing key's secrets are missing, see the comment in release.yml"
+            exit 1
+          fi
+          base64 -d <<< "$RELEASE_KEYSTORE_BASE64" > "$RUNNER_TEMP/release.jks"
+
+      # No tests or lint here: the pre-commit hook has already run them on this commit.
+      - name: Build
+        env:
+          # Keep in sync with signingConfigs and defaultConfig in app/build.gradle.kts.
+          RELEASE_KEYSTORE_FILE: ${{ runner.temp }}/release.jks
+          RELEASE_KEYSTORE_PASSWORD: ${{ secrets.RELEASE_KEYSTORE_PASSWORD }}
+          VERSION_CODE: ${{ steps.version.outputs.code }}
+          VERSION_NAME: ${{ steps.version.outputs.name }}
+        run: |
+          ./gradlew --console=plain assembleRelease
+          mv app/build/outputs/apk/release/app-release.apk "$RUNNER_TEMP/pjoter-play-$VERSION_NAME.apk"
+
+      - name: Publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION_CODE: ${{ steps.version.outputs.code }}
+          VERSION_NAME: ${{ steps.version.outputs.name }}
+        run: |
+          apk="$RUNNER_TEMP/pjoter-play-$VERSION_NAME.apk"
+          tag="pjoter-play-v$VERSION_NAME"
+          # A re-run after a failed catalog push: the release is already there, replace its file.
+          if gh release view "$tag" >/dev/null 2>&1; then
+            gh release upload "$tag" "$apk" --clobber
+          else
+            # --target: the release's own tag points at the built commit, beside the v1.2.3 that started this.
+            gh release create "$tag" "$apk" --target "$GITHUB_SHA" --title "Pjoter Play $VERSION_NAME" \
+              --notes "Built from ${GITHUB_SHA::7}."
+          fi
+
+          git checkout -q main
+          python3 -I scripts/add-release.py pl.pjoterplay.app "$VERSION_CODE" "$VERSION_NAME" \
+            "https://github.com/$GITHUB_REPOSITORY/releases/download/$tag/$(basename "$apk")" "$apk"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -qam "Pjoter Play $VERSION_NAME"
+          # An app's release may have pushed the catalog meanwhile.
+          for attempt in 1 2 3; do
+            git push -q origin main && exit 0
+            git pull -q --rebase origin main
+          done
+          echo "::error::Could not push the catalog"
+          exit 1

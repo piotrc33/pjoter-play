@@ -42,6 +42,8 @@ enum class LoadError { Network, ManagerTooOld }
 data class AppsState(
     /** Null until the first successful download. */
     val items: List<AppItem>? = null,
+    /** This manager's own update, while one is available or being installed. */
+    val managerUpdate: AppItem? = null,
     val loading: Boolean = false,
     val error: LoadError? = null,
 )
@@ -72,7 +74,9 @@ class AppsViewModel(application: Application) : AndroidViewModel(application) {
                 Log.w(TAG, "Catalog download failed", e)
                 LoadError.Network
             }
-            _state.update { it.copy(items = items() ?: it.items, loading = false, error = error) }
+            _state.update {
+                it.copy(items = items() ?: it.items, managerUpdate = managerUpdate(), loading = false, error = error)
+            }
         }
     }
 
@@ -115,7 +119,7 @@ class AppsViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     private fun publish() {
-        items()?.let { items -> _state.update { it.copy(items = items) } }
+        items()?.let { items -> _state.update { it.copy(items = items, managerUpdate = managerUpdate()) } }
     }
 
     private fun items(): List<AppItem>? {
@@ -123,6 +127,19 @@ class AppsViewModel(application: Application) : AndroidViewModel(application) {
         return catalog?.apps?.filter { it.id != MANAGER_ID }?.map { app ->
             AppItem(app, statusOf(app, packages.installedVersion(app.id), Build.VERSION.SDK_INT), operations[app.id])
         }
+    }
+
+    private fun managerUpdate(): AppItem? {
+        val context = getApplication<Application>()
+        // Only the release build: the debug one (".debug") would "update" to the release, another app beside it.
+        if (context.packageName != MANAGER_ID) return null
+        val manager = catalog?.apps?.find { it.id == MANAGER_ID } ?: return null
+        val item = AppItem(
+            manager,
+            statusOf(manager, context.packageManager.installedVersion(MANAGER_ID), Build.VERSION.SDK_INT),
+            operations[MANAGER_ID],
+        )
+        return item.takeIf { it.status is AppStatus.UpdateAvailable || it.operation != null }
     }
 
     private companion object {
