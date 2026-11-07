@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96">
-  <!-- Full-bleed like paggio.svg, in the same palette so the apps look like one family. -->
+  <!-- Full-bleed like pedefka.svg, in the same palette so the apps look like one family. -->
   <rect width="96" height="96" fill="#1F1B16"/>
   <path d="M38,30L68,48L38,66Z" fill="#D9784F" stroke="#D9784F" stroke-width="10" stroke-linejoin="round"/>
   <path d="M30,76H66" stroke="#F6F1E7" stroke-width="5" stroke-linecap="round"/>

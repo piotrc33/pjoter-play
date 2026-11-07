@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96">
-  <!-- paggio's launcher icon (Noc colours), full-bleed: the page and the manager mask it themselves.
+  <!-- pedefka's launcher icon (Noc colours), full-bleed: the page and the manager mask it themselves.
        Keep in sync with reader/app/src/main/res/drawable/ic_launcher_foreground.xml. -->
   <rect width="96" height="96" fill="#1F1B16"/>
   <path fill="#D9784F" d="M30,22H52A6,6 0 0 1 58,28V62A6,6 0 0 1 52,68H30A6,6 0 0 1 24,62V28A6,6 0 0 1 30,22Z"/>

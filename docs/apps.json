@@ -18,10 +18,10 @@
     },
     {
       "id": "pl.reader.app",
-      "name": "paggio",
+      "name": "pedefka",
       "summary": "Czytnik e-booków: EPUB, PDF i MOBI.",
       "description": "Każda książka otwiera się na ostatnio czytanej stronie. Przypisy prowadzą z powrotem do tekstu, wyszukiwanie w książce nie zwraca uwagi na polskie znaki, a po każdym skoku łatwo wrócić na poprzednie miejsce.",
-      "icon": "icons/paggio.png",
+      "icon": "icons/pedefka.png",
       "minSdk": 34,
       "release": {
         "versionCode": 200,

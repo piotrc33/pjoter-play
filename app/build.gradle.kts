@@ -20,8 +20,9 @@ android {
     }
 
     signingConfigs {
-        // paggio's key, the one key for all the apps (CLAUDE.md, Decisions), from the environment so that it stays out
-        // of the repo. Keep in sync with .github/workflows/release.yml. Without it a release build comes out unsigned.
+        // pedefka's key (its files and alias keep the app's old name, paggio), the one key for all the apps (CLAUDE.md,
+        // Decisions), from the environment so that it stays out of the repo. Keep in sync with
+        // .github/workflows/release.yml. Without it a release build comes out unsigned.
         System.getenv("RELEASE_KEYSTORE_FILE")?.let { keystore ->
             create("release") {
                 storeFile = file(keystore)

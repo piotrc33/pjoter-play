@@ -49,7 +49,8 @@ jobs:
           java-version: '21'
           cache: gradle
 
-      # paggio's key, the one for all the apps: a manager signed by another key couldn't update itself. Set once with
+      # pedefka's key (its files keep the app's old name, paggio), the one for all the apps: a manager signed by
+      # another key couldn't update itself. Set once with
       #   base64 -w0 ~/.android/paggio-release.jks | gh secret set RELEASE_KEYSTORE_BASE64 -R piotrc33/pjoter-play
       #   gh secret set RELEASE_KEYSTORE_PASSWORD -R piotrc33/pjoter-play < ~/.android/paggio-release.password
       # Safe in a public repo: secrets never reach workflows of forks' pull requests, and only the owner pushes tags.

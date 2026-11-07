@@ -39,7 +39,7 @@ Keep in sync with `docs/app.js` and the manager's parser.
 - The app's repo needs the secret `PJOTER_PLAY_TOKEN`: a fine-grained token with Contents read/write on this repo only
   (releases and the catalog push). App repos are private, so their own `GITHUB_TOKEN` can't write here.
 - The manager itself: `git tag v1.2.3 && git push origin v1.2.3` here; `.github/workflows/release.yml` (the same steps,
-  this repo's own token, secrets RELEASE_KEYSTORE_BASE64/PASSWORD with paggio's key) publishes `pjoter-play-v1.2.3`.
+  this repo's own token, secrets RELEASE_KEYSTORE_BASE64/PASSWORD with pedefka's key) publishes `pjoter-play-v1.2.3`.
   Installed release managers show an update card on top of the list (`AppsState.managerUpdate`; never in the debug
   build, whose package differs). The workflow pushes the catalog to `main`, so pull before working on `docs/`.
 - A new app needs its entry (name, texts, icon, minSdk, `release: null`) added here by hand first; the script only
@@ -50,8 +50,8 @@ Keep in sync with `docs/app.js` and the manager's parser.
   confirmation dialog only on API 31+ (`USER_ACTION_NOT_REQUIRED`); below that the system asks every time.
 - One release signing key for all apps (`~/.android/paggio-release.jks`): Android refuses an update signed by another
   key, and the only way out, uninstalling, deletes the app's data.
-- First app in the catalog: paggio (`~/projects/reader`, `pl.reader.app`, minSdk 34). Next: słownik, which needs a
-  GitHub repo, the release key and CI first.
+- First app in the catalog: pedefka, "paggio" until 2026-11 (`~/projects/reader`, repo `piotrc33/pedefka`,
+  `pl.reader.app`, minSdk 34). Next: słownik, which needs a GitHub repo, the release key and CI first.
 
 ## Workflow
 - `scripts/test.sh [TestClass ...]` unit tests (~20 s warm); `scripts/quick.sh` tests + install + start on the phone;
@@ -67,8 +67,9 @@ Keep in sync with `docs/app.js` and the manager's parser.
   instructions (docs/index.html) say the same: keep them in sync.
 - Self-update tried 2026-11-07: a local release 0.0.5 (adb-installed) -> 0.1.0 from the card: one "Zaktualizować tę
   aplikację?" and Play Protect, as the installer of record was the shell; now it is the manager itself.
-- Release paggio (`pl.reader.app` 0.2.0) is on the phone, installed by the debug manager (installerPackageName
-  `pl.pjoterplay.app.debug`): the release manager is another package, so its first update of paggio will ask once.
+- Release paggio (`pl.reader.app` 0.2.0, since renamed pedefka) is on the phone, installed by the debug manager
+  (installerPackageName `pl.pjoterplay.app.debug`): the release manager is another package, so its first update of
+  pedefka will ask once.
 - Update check on demand (debug build): `adb shell am force-stop pl.pjoterplay.app.debug` then
   `adb shell am start -n pl.pjoterplay.app.debug/pl.pjoterplay.app.MainActivity --ez check_updates true`; result in
   `adb logcat -s UpdateCheck`. It also sees the release manager (`pl.pjoterplay.app`) as an app with updates.
