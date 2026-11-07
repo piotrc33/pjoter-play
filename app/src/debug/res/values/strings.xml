@@ -1,0 +1,4 @@
+<resources>
+    <!-- On the launcher beside the release build from the page, which is "Pjoter Play". -->
+    <string name="app_name">Pjoter Play debug</string>
+</resources>
