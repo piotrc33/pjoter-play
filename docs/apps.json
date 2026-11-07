@@ -38,7 +38,13 @@
       "description": "Widżet na pulpicie wygląda jak pole wyszukiwania: dotknięcie otwiera okienko, a definicje pojawiają się już w trakcie pisania. Rozpoznaje odmienione formy („psami” → pies), a zaznaczone słowo w innej aplikacji sprawdza opcja „Definicja” w menu. Dane pochodzą z Wikisłownika.",
       "icon": "icons/definka.png",
       "minSdk": 34,
-      "release": null
+      "release": {
+        "versionCode": 100,
+        "versionName": "0.1.0",
+        "apk": "https://github.com/piotrc33/pjoter-play/releases/download/definka-v0.1.0/definka-0.1.0.apk",
+        "sha256": "ab438589f0ecdb65f6ce250081eb9d41de81e51f7024621b305856023ac1163c",
+        "size": 19575037
+      }
     }
   ]
 }
