@@ -53,7 +53,8 @@ Keep in sync with `docs/app.js` and the manager's parser.
 - First app in the catalog: pedefka, "paggio" until 2026-11 (`~/projects/reader`, repo `piotrc33/pedefka`,
   `pl.reader.app`, minSdk 34). Second: definka (`~/projects/slownik`, repo `piotrc33/definka`, `pl.slownik.app`,
   minSdk 34); its workflow downloads the 58 MB dictionary DB from the definka repo's release `db`, as the DB is
-  built locally and not in git.
+  built locally and not in git. Third: plantka (`~/projects/plantka`, repo `piotrc33/plantka`, `pl.plantka.app`,
+  minSdk 34).
 
 ## Workflow
 - `scripts/test.sh [TestClass ...]` unit tests (~20 s warm); `scripts/quick.sh` tests + install + start on the phone;

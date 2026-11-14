@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <!-- plantka's launcher icon, full-bleed: the page and the manager mask it themselves. The 200-unit square is the
+       launcher's visible 72 dp. Keep in sync with plantka/app/src/main/res/drawable/ic_launcher_foreground.xml. -->
+  <rect width="200" height="200" fill="#2E7D4F"/>
+  <path d="M84,92 V168" stroke="#FFFFFF" stroke-width="22" stroke-linecap="round" fill="none"/>
+  <path d="M84,118 a28,28 0 1,0 56,0 a28,28 0 1,0 -56,0" stroke="#FFFFFF" stroke-width="22" fill="none"/>
+  <path d="M84,92 V60" stroke="#B9E27A" stroke-width="9" stroke-linecap="round" fill="none"/>
+  <path fill="#B9E27A" d="M84,66 C62,66 52,50 54,34 C72,34 84,46 84,66 Z"/>
+  <path fill="#B9E27A" d="M84,60 C96,42 114,38 128,42 C122,58 104,66 84,60 Z"/>
+</svg>

@@ -45,6 +45,15 @@
         "sha256": "ab438589f0ecdb65f6ce250081eb9d41de81e51f7024621b305856023ac1163c",
         "size": 19575037
       }
+    },
+    {
+      "id": "pl.plantka.app",
+      "name": "plantka",
+      "summary": "Licznik różnych roślin zjedzonych w tygodniu, w widżecie.",
+      "description": "Widżet na pulpicie z przyciskiem dodawania i licznikiem do 30 roślin tygodniowo. Dotknięcie otwiera okienko z kafelkami ponad 200 warzyw, owoców, zbóż, orzechów, ziół i grzybów filtrowanymi w trakcie pisania, a dotknięcie licznika pokazuje, co już zjedzono w tym tygodniu i ostatnio.",
+      "icon": "icons/plantka.png",
+      "minSdk": 34,
+      "release": null
     }
   ]
 }
