@@ -53,7 +53,13 @@
       "description": "Widżet na pulpicie z przyciskiem dodawania i licznikiem do 30 roślin tygodniowo. Dotknięcie otwiera okienko z kafelkami ponad 200 warzyw, owoców, zbóż, orzechów, ziół i grzybów filtrowanymi w trakcie pisania, a dotknięcie licznika pokazuje, co już zjedzono w tym tygodniu i ostatnio.",
       "icon": "icons/plantka.png",
       "minSdk": 34,
-      "release": null
+      "release": {
+        "versionCode": 100,
+        "versionName": "0.1.0",
+        "apk": "https://github.com/piotrc33/pjoter-play/releases/download/plantka-v0.1.0/plantka-0.1.0.apk",
+        "sha256": "222b2eab28590a2552f6e3dcd5efc494507fed34ba5fb0385273c1d3a9cfe956",
+        "size": 2951255
+      }
     }
   ]
 }
