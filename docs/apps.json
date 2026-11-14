@@ -54,11 +54,11 @@
       "icon": "icons/plantka.png",
       "minSdk": 34,
       "release": {
-        "versionCode": 100,
-        "versionName": "0.1.0",
-        "apk": "https://github.com/piotrc33/pjoter-play/releases/download/plantka-v0.1.0/plantka-0.1.0.apk",
-        "sha256": "222b2eab28590a2552f6e3dcd5efc494507fed34ba5fb0385273c1d3a9cfe956",
-        "size": 2951255
+        "versionCode": 101,
+        "versionName": "0.1.1",
+        "apk": "https://github.com/piotrc33/pjoter-play/releases/download/plantka-v0.1.1/plantka-0.1.1.apk",
+        "sha256": "6c0878de993ca12268a46018e4b5eb9ff0b2148e6798592f7d355b5e002a53d9",
+        "size": 2967639
       }
     }
   ]
