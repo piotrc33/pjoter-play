@@ -1,0 +1,73 @@
+# Agent-first Kotlin static analysis (extends Detekt 2.0 defaults via buildUponDefaultConfig = true).
+# Keep in sync across Android repos (zadanka, plantka, slownik, pjoter-play, reader, expense-tracker).
+# Focuses on dead code, control-flow bloat, silent exception bugs, and greppability without cosmetic/Compose noise.
+
+config:
+  validation: true
+  warningsAsErrors: true
+
+naming:
+  FunctionNaming:
+    ignoreAnnotated: ['Composable']
+  # Kotlin vertical-slice files routinely mix top-level functions/composables with one helper type.
+  MatchingDeclarationName:
+    active: false
+
+complexity:
+  ComplexCondition:
+    allowedConditions: 5
+  CyclomaticComplexMethod:
+    allowedComplexity: 18
+    ignoreAnnotated: ['Composable']
+  LongMethod:
+    allowedLines: 80
+    ignoreAnnotated: ['Composable']
+  LongParameterList:
+    allowedFunctionParameters: 10
+    allowedConstructorParameters: 10
+    ignoreAnnotated: ['Composable']
+  # File line limits (agent-lint + LargeClass) guard cohesion better than counting small helpers.
+  TooManyFunctions:
+    active: false
+
+coroutines:
+  # No DI framework by design across these apps.
+  InjectDispatcher:
+    active: false
+
+exceptions:
+  # UI/worker error boundaries legitimately catch Exception to surface errors; SwallowedException & EmptyCatchBlock stay on.
+  TooGenericExceptionCaught:
+    active: false
+
+performance:
+  SpreadOperator:
+    active: false
+
+potential-bugs:
+  # Android Lint's DefaultLocale already checks numeric/date specifiers without flagging plain %s strings.
+  ImplicitDefaultLocale:
+    active: false
+
+style:
+  # Flat early returns and loop guards keep nesting shallow (preferred for agent readability).
+  DestructuringDeclarationWithTooManyEntries:
+    active: false
+  LoopWithTooManyJumpStatements:
+    active: false
+  ReturnCount:
+    active: false
+  ThrowsCount:
+    active: false
+  UseOrEmpty:
+    active: false
+  # Off for Compose dp/alpha/animation constants and formatting cosmetics.
+  MagicNumber:
+    active: false
+  MaxLineLength:
+    active: false
+  # Turned on explicitly (off in defaults) so dead imports never clutter agent context.
+  UnusedImport:
+    active: true
+  WildcardImport:
+    excludeImports: []
